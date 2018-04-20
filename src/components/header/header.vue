@@ -33,6 +33,9 @@
       <div class="detail-wrapper clearfix">
         <div class="detail-main">
           <div class="name">{{ seller.name }}</div>
+          <div class="star-wrap">
+            <star :size="48" :score="3.5"></star>
+          </div>
         </div>
       </div>
       <div class="detail-close">
@@ -43,6 +46,7 @@
 </template>
 
 <script>
+import star from '@/components/star/star'
 export default {
   name: 'Header',
   data() {
@@ -62,6 +66,9 @@ export default {
     showDetail() {
       this.detailShow = true
     }
+  },
+  components: {
+    star
   }
 }
 </script>
@@ -100,7 +107,6 @@ export default {
             font-size 16px
             line-height 18px
             font-weight bold
-
         .description
           margin-bottom 10px
           line-height 12px
@@ -200,6 +206,8 @@ export default {
             font-weight bold
             color rgb(255,255,255)
             text-align center
+          .star-wrap
+            margin-top 16px
       .detail-close
         margin-top -64px
         text-align center
