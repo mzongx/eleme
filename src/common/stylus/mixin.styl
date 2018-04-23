@@ -10,6 +10,9 @@ border-1px($color)
     border-top 1px solid $color
     content: ' '
 
+border-none()
+  &:after
+    display none
 bg-image($bg)
   background-image url($bg+'@2x.png')
   @media only screen and (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3)

@@ -29,19 +29,37 @@
     <div class="background">
       <img :src="seller.avatar" width="100%" height="100%">
     </div>
-    <div class="detail" v-show="detailShow">
-      <div class="detail-wrapper clearfix">
-        <div class="detail-main">
-          <div class="name">{{ seller.name }}</div>
-          <div class="star-wrap">
-            <star :size="48" :score="3.5"></star>
+    <transition name="fade">
+      <div class="detail" v-show="detailShow">
+        <div class="detail-wrapper clearfix">
+          <div class="detail-main">
+            <div class="name">{{ seller.name }}</div>
+            <div class="star-wrap">
+              <star :size="48" :score="3.5"></star>
+            </div>
+            <div class="title">
+              <div class="line"></div>
+              <div class="text">优惠信息</div>
+              <div class="line"></div>
+            </div>
+            <ul class="supports" v-if="seller.supports">
+              <li v-for="(support, index) in seller.supports" :key="index" class="supports-item"><i class="icon" :class="classMap[support.type]"></i>{{ support.description }}</li>
+            </ul>
+            <div class="title">
+              <div class="line"></div>
+              <div class="text">商家公告</div>
+              <div class="line"></div>
+            </div>
+            <div class="bulletin">
+              {{ seller.bulletin }}
+            </div>
           </div>
         </div>
+        <div class="detail-close">
+          <i class="icon icon-close" @click="closeDetail"></i>
+        </div>
       </div>
-      <div class="detail-close">
-        <i class="icon icon-close"></i>
-      </div>
-    </div>
+    </transition>
   </div>
 </template>
 
@@ -65,6 +83,9 @@ export default {
   methods: {
     showDetail() {
       this.detailShow = true
+    },
+    closeDetail() {
+      this.detailShow = false
     }
   },
   components: {
@@ -113,13 +134,13 @@ export default {
           font-size 12px
         .support
           .icon
-            display: inline-block
-            vertical-align: top
-            width: 12px
-            height: 12px
-            margin-right: 4px
-            background-size: 12px 12px
-            background-repeat: no-repeat
+            display inline-block
+            vertical-align top
+            width 12px
+            height 12px
+            margin-right 4px
+            background-size 12px 12px
+            background-repeat no-repeat
             &.decrease
               bg-image('decrease_1')
             &.discount
@@ -131,75 +152,82 @@ export default {
             &.special
               bg-image('special_1')
           .text
-            line-height: 12px
-            font-size: 10px
+            line-height 12px
+            font-size 10px
       .support-count
-        position: absolute
-        right: 12px
-        bottom: 14px
-        padding: 0 8px
-        height: 24px
-        line-height: 24px
-        border-radius: 14px
-        background: rgba(0, 0, 0, 0.2)
-        text-align: center
+        position absolute
+        right 12px
+        bottom 14px
+        padding 0 8px
+        height 24px
+        line-height 24px
+        border-radius 14px
+        background rgba(0, 0, 0, 0.2)
+        text-align center
         .count
-          vertical-align: top
-          font-size: 10px
+          vertical-align top
+          font-size 10px
         .icon-keyboard_arrow_right
-          margin-left: 2px
-          line-height: 24px
-          font-size: 10px
+          margin-left 2px
+          line-height 24px
+          font-size 10px
     .bulletin-wrapper
-      position: relative
-      height: 28px
-      line-height: 28px
-      padding: 0 22px 0 12px
-      white-space: nowrap
-      overflow: hidden
-      text-overflow: ellipsis
-      background: rgba(7, 17, 27, 0.2)
+      position relative
+      height 28px
+      line-height 28px
+      padding 0 22px 0 12px
+      white-space nowrap
+      overflow hidden
+      text-overflow ellipsis
+      background rgba(7, 17, 27, 0.2)
       .bulletin-title
-        display: inline-block
-        vertical-align: top
-        margin-top: 8px
-        width: 22px
-        height: 12px
+        display inline-block
+        vertical-align top
+        margin-top 8px
+        width 22px
+        height 12px
         bg-image('bulletin')
-        background-size: 22px 12px
-        background-repeat: no-repeat
+        background-size 22px 12px
+        background-repeat no-repeat
       .bulletin-text
-        vertical-align: top
-        margin: 0 4px
-        font-size: 10px
+        vertical-align top
+        margin 0 4px
+        font-size 10px
       .icon-keyboard_arrow_right
-        position: absolute
-        font-size: 10px
-        right: 12px
-        top: 8px
+        position absolute
+        font-size 10px
+        right 12px
+        top 8px
     .background
-      position: absolute
-      top: 0
-      left: 0
-      width: 100%
-      height: 100%
-      z-index: -1
-      filter: blur(10px)
+      position absolute
+      top 0
+      left 0
+      width 100%
+      height 100%
+      z-index -1
+      filter blur(10px)
     .detail
-      position: fixed
-      z-index: 100
-      top: 0
-      left: 0
-      width: 100%
-      height: 100%
+      position fixed
+      z-index 100
+      top 0
+      left 0
+      width 100%
+      height 100%
       background rgba(0,0,0,.5)
-      overflow: auto
+      transition all .3s ease-in
+      overflow auto
+      backdrop-filter blur(10px)
+      &.fade-transition
+        opacity 1
+        background rgba(7, 17, 27, 0.8)
+      &.fade-enter, &.fade-leave-to
+        opacity 0
+        background rgba(7, 17, 27, 0)
       .detail-wrapper
         min-height 100%
         width 100%
         .detail-main
           margin-top 64px
-          padding-bottom 32px
           .name
             font-size 16px
             line-height 16px
@@ -208,6 +236,51 @@ export default {
             text-align center
           .star-wrap
             margin-top 16px
+          .title
+            width 80%
+            margin 28px auto 24px
+            display flex
+            .text
+              margin 0 12px
+              font-size 14px
+              font-weight bold
+            .line
+              position relative
+              top -6px
+              flex 1
+              border-bottom 1px solid rgba(255,255,255,.2)
+          .supports
+            width 80%
+            margin 0 auto
+            .supports-item
+              padding 6px 12px
+              font-size 12px
+              font-weight 200
+              .icon
+                width 16px
+                height 16px
+                display inline-block
+                margin-right 6px
+                vertical-align middle
+                background-size 16px 16px
+                background-repeat no-repeat
+                &.decrease
+                  bg-image('decrease_2')
+                &.discount
+                  bg-image('discount_2')
+                &.guarantee
+                  bg-image('guarantee_2')
+                &.invoice
+                  bg-image('invoice_2')
+                &.special
+                  bg-image('special_2')
+          .bulletin
+            width 80%
+            margin 0 auto
+            padding 0 12px
+            font-size 12px
+            line-height 24px
+            font-weight 200
       .detail-close
         margin-top -64px
         text-align center
