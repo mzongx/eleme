@@ -1,8 +1,8 @@
 <template>
   <div class="goods">
-    <div class="menu-wrapper">
+    <div class="menu-wrapper" ref="menuWrapper">
       <ul>
-        <li v-for="(goodsItem, index) in goods" :key="index" class="menu-item">
+        <li v-for="(goodsItem, index) in goods" :key="index" class="menu-item" @click="selectMenu(index, $event)">
           <span class="text border-1px"><span class="icon" v-show="goodsItem.type > 0" :class="classMap[goodsItem.type]"></span>{{ goodsItem.name }}</span>
         </li>
       </ul>
@@ -29,35 +29,53 @@
 </template>
 
 <script type="text/ecmascript-6">
-export default {
-  data () {
-    return {
-      goods: []
-    }
-  },
-  props: {
-    seller: {
-      type: Object
-    }
-  },
-  created() {
-    let _this = this
-    _this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee']
-    this.$http.get('/api/goods', {
-    }).then(function (response) {
-      response = response.data
-      if (response.errno === 0) {
-        _this.goods = response.data
+  import Bscroll from 'better-scroll'
+  export default {
+    data () {
+      return {
+        goods: []
       }
-      console.log(response.data)
-    }).catch(function (error) {
-      console.log(error)
-    })
-  },
-  components: {
+    },
+    props: {
+      seller: {
+        type: Object
+      }
+    },
+    created() {
+      let _this = this
+      _this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee']
+      this.$http.get('/api/goods', {
+      }).then(function (response) {
+        response = response.data
+        if (response.errno === 0) {
+          _this.goods = response.data
+          _this.$nextTick(function() {
+            _this._initScroll()
+          })
+        }
+      }).catch(function (error) {
+        console.log(error)
+      })
+    },
+    methods: {
+      selectMenu(index, event) {
+        // 选中左侧菜单栏
+        console.log(event)
+      },
+      _initScroll() {
+        // 初始化滚动条
+        let meunScroll = new Bscroll('.menu-wrapper', {
+          click: true
+        })
+        let foodScroll = new Bscroll('.foods-wrapper', {
+          click: true
+        })
+      }
+    },
+    components: {
 
+    }
   }
-}
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
