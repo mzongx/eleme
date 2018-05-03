@@ -12,7 +12,6 @@ Vue.prototype.$http = axios
 new Vue({
   el: '#app',
   router,
-  base: __dirname, // 这个很重要
   render: h => h(App)
   // components: { App },
   // template: '<App/>'

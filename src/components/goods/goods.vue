@@ -25,11 +25,13 @@
         </li>
       </ul>
     </div>
+    <shopcart :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"/>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import Bscroll from 'better-scroll'
+  import shopcart from '@/components/shopcart/shopcart'
   export default {
     data () {
       return {
@@ -106,7 +108,7 @@
       }
     },
     components: {
-
+      shopcart
     }
   }
 </script>
@@ -116,7 +118,7 @@
   .goods
     position absolute
     top 174px
-    bottom 50px
+    bottom 48px
     left 0
     right 0
     overflow hidden
