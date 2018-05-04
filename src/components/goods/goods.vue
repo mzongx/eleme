@@ -19,6 +19,7 @@
                 <p class="foods-item-des">{{ foodsItem.description }}</p>
                 <p class="foods-item-des"><span class="mr12">月售{{ foodsItem.sellCount }}份</span><span>好评率{{ foodsItem.rating }}%</span></p>
                 <p><span class="foods-item-price">￥{{ foodsItem.price }}</span><span v-show="foodsItem.oldPrice">￥{{ foodsItem.oldPrice }}</span></p>
+                <div class="cartcontrol-wrapper"><cartcontrol :food="foodsItem" /></div>
               </div>
             </li>
           </ul>
@@ -32,6 +33,7 @@
 <script type="text/ecmascript-6">
   import Bscroll from 'better-scroll'
   import shopcart from '@/components/shopcart/shopcart'
+  import cartcontrol from '@/components/cartcontrol/cartcontrol'
   export default {
     data () {
       return {
@@ -108,7 +110,8 @@
       }
     },
     components: {
-      shopcart
+      shopcart,
+      cartcontrol
     }
   }
 </script>
@@ -195,6 +198,11 @@
             height 100%
         .content
           flex 1
+          position relative
+          .cartcontrol-wrapper
+            position absolute
+            right 0px
+            bottom -4px
           .foods-item-title
             font-size 14px
             line-height 14px

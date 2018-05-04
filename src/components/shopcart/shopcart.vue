@@ -2,13 +2,14 @@
   <div class="shopcart">
     <div class="shopcart-wraper">
       <div class="shopcart-icon-wraper" :class="{'active': totalPrice > 0}">
+        <span class="badge" v-show="chooseFoodsCount > 0">{{ chooseFoodsCount }}</span>
         <div class="shopcart-icon"><i class="icon-shopping_cart"></i></div>
       </div>
-      <span class="total-price">￥{{ totalPrice }}</span>
+      <span class="total-price" :class="{'active': totalPrice > 0}">￥{{ totalPrice }}</span>
       <span class="line"></span>
       <span class="delivery-price">另需配送费￥{{ deliveryPrice }}元</span>
     </div>
-    <div class="shopcart-result">
+    <div class="shopcart-result" :class="{'active': resultBtn}">
       <a href="#" class="result-btn">{{ diffPrice }}</a>
     </div>
   </div>
@@ -59,6 +60,19 @@
         } else {
           return '去结算'
         }
+      },
+      resultBtn() {
+        if (this.totalPrice >= this.minPrice) {
+          return true
+        }
+        return false
+      },
+      chooseFoodsCount() {
+        let count = 0
+        this.selectFood.forEach((v, i) => {
+          count += v.count
+        })
+        return count
       }
     },
     components: {
@@ -93,6 +107,20 @@
         background-color #141d27
         box-sizing border-box
         display inline-block
+        .badge
+          position absolute
+          right 0px
+          top 0px
+          display inline-block
+          padding .15em .4em
+          min-width 8px
+          border-radius 18px
+          background-color #f43530
+          color #fff
+          line-height 1.2
+          text-align center
+          font-size 12px
+          vertical-align middle
         &.active
           .shopcart-icon
             background-color #00a0dc
@@ -114,6 +142,9 @@
         font-weight 700
         line-height 48px
         vertical-align middle
+      .total-price
+        &.active
+          color #fff
       .delivery-price
         font-weight 400
         font-size 12px
@@ -131,6 +162,10 @@
       flex 0 0 105px
       text-align center
       background-color #2b333b
+      &.active
+        background-color #00b43c
+        .result-btn
+          color #fff
       .result-btn
         font-size 12px
         line-height 48px
