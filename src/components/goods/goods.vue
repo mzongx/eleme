@@ -1,5 +1,5 @@
 <template>
-  <div class="goods">
+  <div class="goods" ref="goods">
     <div class="menu-wrapper" ref="menuWrapper">
       <ul>
         <li v-for="(goodsItem, index) in goods" :key="index" class="menu-item" @click="selectMenu(index, $event)" :class="{'current':currentIndex == index}">
@@ -19,14 +19,16 @@
                 <p class="foods-item-des">{{ foodsItem.description }}</p>
                 <p class="foods-item-des"><span class="mr12">月售{{ foodsItem.sellCount }}份</span><span>好评率{{ foodsItem.rating }}%</span></p>
                 <p><span class="foods-item-price">￥{{ foodsItem.price }}</span><span v-show="foodsItem.oldPrice">￥{{ foodsItem.oldPrice }}</span></p>
-                <div class="cartcontrol-wrapper"><cartcontrol :food="foodsItem" /></div>
+                <div class="cartcontrol-wrapper">
+                  <cartcontrol :food="foodsItem" />
+                </div>
               </div>
             </li>
           </ul>
         </li>
       </ul>
     </div>
-    <shopcart :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"/>
+    <shopcart :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice" :select-food="selectFood"/>
   </div>
 </template>
 
@@ -73,10 +75,43 @@
           height = this.listHeight[i]
           heightNext = this.listHeight[i + 1]
           if ((this.scrollY >= height && this.scrollY < heightNext) || !heightNext) {
+            // 当左侧内容较多时，会随foodsList滚动而滚动
+            let resScrollHeight = 0
+            resScrollHeight += Math.ceil(this.rclcMenuHeight / this.listHeight.length) * i
+            if (resScrollHeight >= this.rclcMenuHeight) {
+              resScrollHeight = this.rclcMenuHeight
+            }
+            if (this.foodScroll.directionY < 0) {
+              resScrollHeight *= 1
+              if (resScrollHeight >= 0) {
+                resScrollHeight = 0
+              }
+            } else {
+              resScrollHeight *= -1
+            }
+            this.meunScroll.scrollTo(0, resScrollHeight, 300)
             return i
           }
         }
         return 0
+      },
+      rclcMenuHeight() {
+        // 计算左侧menu高度与展示区差值，用于滚动显示底部被遮挡部分
+        let menuWrapperHeight = this.$refs.menuWrapper.scrollHeight
+        let goodsHeight = this.$refs.goods.offsetHeight
+        let resCalc = Math.abs(menuWrapperHeight - goodsHeight)
+        return resCalc
+      },
+      selectFood() {
+        let foods = []
+        this.goods.forEach((good) => {
+          good.foods.forEach((food) => {
+            if (food.count) {
+              foods.push(food)
+            }
+          })
+        })
+        return foods
       }
     },
     methods: {
@@ -94,6 +129,8 @@
           click: true,
           probeType: 3
         })
+
+        // 监听foodScroll滚动
         this.foodScroll.on('scroll', (pos) => {
           this.scrollY = Math.abs(Math.round(pos.y))
         })
@@ -221,4 +258,11 @@
           .foods-item-oldprice
             font-size 10px
             color rgb(147,153,159)
+    .shop-cart
+      position fixed
+      bottom 0
+      left 0
+      right 0
+      height 50px
+      background-color #000
 </style>

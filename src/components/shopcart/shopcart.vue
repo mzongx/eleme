@@ -26,12 +26,7 @@
       selectFood: { // 选择的食物
         type: Array,
         default() {
-          return [
-            {
-              price: 10,
-              count: 1
-            }
-          ]
+          return []
         }
       },
       deliveryPrice: { // 配送费
