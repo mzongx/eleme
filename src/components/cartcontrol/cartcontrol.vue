@@ -6,7 +6,7 @@
       </div>
     </transition>
     <div class="cart-count" v-show="food.count > 0">{{ food.count }}</div>
-    <div class="cart-add icon-add_circle" @click="addCart"></div>
+    <div class="cart-add icon-add_circle" @click="addCart($event)"></div>
   </div>
 </template>
 
@@ -23,12 +23,13 @@ export default {
     }
   },
   methods: {
-    addCart() {
+    addCart(event) {
       if (!this.food.count) {
         this.$set(this.food, 'count', 1)
       } else {
         this.food.count++
       }
+      this.$emit('dorp-ball', event)
     },
     decreaseCart() {
       this.food.count--

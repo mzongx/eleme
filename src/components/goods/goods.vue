@@ -20,7 +20,7 @@
                 <p class="foods-item-des"><span class="mr12">月售{{ foodsItem.sellCount }}份</span><span>好评率{{ foodsItem.rating }}%</span></p>
                 <p><span class="foods-item-price">￥{{ foodsItem.price }}</span><span v-show="foodsItem.oldPrice">￥{{ foodsItem.oldPrice }}</span></p>
                 <div class="cartcontrol-wrapper">
-                  <cartcontrol :food="foodsItem" />
+                  <cartcontrol v-on:dorp-ball="_dropBall" :food="foodsItem" />
                 </div>
               </div>
             </li>
@@ -28,7 +28,7 @@
         </li>
       </ul>
     </div>
-    <shopcart :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice" :select-food="selectFood"/>
+    <shopcart ref="shopcart" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice" :select-food="selectFood"/>
   </div>
 </template>
 
@@ -144,6 +144,9 @@
           height += v.offsetHeight
           this.listHeight.push(height) // offsetHeight会计算容器的border，而clientHeight不会计算border
         })
+      },
+      _dropBall(event) {
+        this.$refs.shopcart.dropBall(event)
       }
     },
     components: {
