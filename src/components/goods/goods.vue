@@ -12,13 +12,13 @@
         <li v-for="(goodsItem, index) in goods" :key="index" class="goods-item">
           <div class="goods-item-title">{{ goodsItem.name }}</div>
           <ul>
-            <li v-for="(foodsItem, foodIndex) in goodsItem.foods" :key="foodIndex" class="foods-item border-1px">
+            <li v-for="(foodsItem, foodIndex) in goodsItem.foods" :key="foodIndex" class="foods-item border-1px" @click="foodDetail(foodsItem)">
               <div class="icon"><img :src="foodsItem.image" class="icon-img" /></div>
               <div class="content">
                 <h3 class="foods-item-title">{{ foodsItem.name }}</h3>
                 <p class="foods-item-des">{{ foodsItem.description }}</p>
                 <p class="foods-item-des"><span class="mr12">月售{{ foodsItem.sellCount }}份</span><span>好评率{{ foodsItem.rating }}%</span></p>
-                <p><span class="foods-item-price">￥{{ foodsItem.price }}</span><span v-show="foodsItem.oldPrice">￥{{ foodsItem.oldPrice }}</span></p>
+                <p><span class="foods-item-price">￥{{ foodsItem.price }}</span><span v-show="foodsItem.oldPrice" class="foods-item-oldprice">￥{{ foodsItem.oldPrice }}</span></p>
                 <div class="cartcontrol-wrapper">
                   <cartcontrol v-on:dorp-ball="_dropBall" :food="foodsItem" />
                 </div>
@@ -29,6 +29,7 @@
       </ul>
     </div>
     <shopcart ref="shopcart" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice" :select-food="selectFood"/>
+    <food v-on:dorp-ball="_dropBall" ref="foodpage" />
   </div>
 </template>
 
@@ -36,6 +37,7 @@
   import Bscroll from 'better-scroll'
   import shopcart from '@/components/shopcart/shopcart'
   import cartcontrol from '@/components/cartcontrol/cartcontrol'
+  import food from '@/components/food/food'
   export default {
     data () {
       return {
@@ -115,6 +117,9 @@
       }
     },
     methods: {
+      foodDetail(food) {
+        this.$refs.foodpage.showFoods(food) // 显示页面
+      },
       selectMenu(index, event) {
         // 选中左侧菜单
         let goodsItem = document.querySelectorAll('.goods-item')
@@ -151,7 +156,8 @@
     },
     components: {
       shopcart,
-      cartcontrol
+      cartcontrol,
+      food
     }
   }
 </script>
@@ -256,6 +262,7 @@
           .foods-item-price
             font-size 14px
             line-height 14px
+            margin-right 12px
             font-weight bold
             color rgb(240,20,20)
           .foods-item-oldprice

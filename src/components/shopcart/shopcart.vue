@@ -28,7 +28,7 @@
           购物车
           <a href="javascript:;" class="clear-card" @click="clearCard">清除</a>
         </div>
-        <div class="card-list-item">
+        <div class="card-list-item" ref="cardList">
           <ul class="card-item-wrapper">
             <li class="card-item-food" v-for="(food, index) in selectFood" :key="index">
               <span class="name">{{ food.name }}</span>
@@ -44,6 +44,7 @@
 
 <script type="text/ecmascript-6">
   import cartcontrol from '@/components/cartcontrol/cartcontrol'
+  import Bscroll from 'better-scroll'
   export default {
     data() {
       return {
@@ -176,6 +177,11 @@
           return false
         }
         let show = !this.fold
+        if (show) {
+          this.cardList = new Bscroll(this.$refs.cardList, {
+            click: true
+          })
+        }
         return show
       }
     },
@@ -330,6 +336,7 @@
         float right
     .card-list-item
       max-height 217px
+      overflow hidden
       .card-item-wrapper
         padding 0 18px
         .card-item-food
