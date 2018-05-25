@@ -1,22 +1,28 @@
 <template>
   <div class="ratings-select">
     <div class="ratings-type border-1px">
-      <span class="types all" :class="{'on': selectType === 1}" @click="select(1)">{{ ratingsType.all }}<i>47</i></span>
-      <span class="types positive" :class="{'on': selectType === 2}" @click="select(2)">{{ ratingsType.positive }}<i>47</i></span>
-      <span class="types negative" :class="{'on': selectType === 0}" @click="select(0)">{{ ratingsType.negative }}<i>47</i></span>
+      <span class="types all" :class="{'on': selectType === 2}" @click="select(2)">{{ ratingsType.all }}<i>{{ ratings.length }}</i></span>
+      <span class="types positive" :class="{'on': selectType === 0}" @click="select(0)">{{ ratingsType.positive }}<i>{{ negation.length }}</i></span>
+      <span class="types negative" :class="{'on': selectType === 1}" @click="select(1)">{{ ratingsType.negative }}<i>{{ positive.length }}</i></span>
     </div>
     <div class="only-content">
-      <label :class="{'on': onlyCon}" @click="toggleContent"><i class="icon-check_circle"></i><span class="text">只看有内容的评价</span></label>
+      <label :class="{'on': onlyContent}" @click="toggleContent"><i class="icon-check_circle"></i><span class="text">只看有内容的评价</span></label>
     </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-// const ALL = 1
+const ALL = 2
 // const POSITIVE = 2
 // const NEGATIVE = 0
 export default {
   props: {
+    ratings: {
+      type: Array,
+      default() {
+        return []
+      }
+    },
     ratingsType: {
       type: Object,
       default() {
@@ -27,6 +33,10 @@ export default {
         }
       }
     },
+    selectType: {
+      type: Number,
+      default: ALL
+    },
     onlyContent: {
       type: Boolean,
       default: false
@@ -34,25 +44,29 @@ export default {
   },
   data() {
     return {
-      selectType: 1
+      // selectType: 1
     }
   },
   methods: {
     toggleContent() {
-      this.onlyCon = !this.onlyCon
+      // 子组件不能修改props，所以通知父组件来修改
+      this.$emit('toggle')
     },
     select(type) {
-      this.selectType = type
+      this.$emit('select', type)
     }
   },
   computed: {
-    onlyCon() {
-      let res = this.onlyContent
-      return res
+    negation() {
+      return this.ratings.filter((v, i) => {
+        return v.rateType === 0
+      })
+    },
+    positive() {
+      return this.ratings.filter((v, i) => {
+        return v.rateType === 1
+      })
     }
-  },
-  components: {
-
   }
 }
 </script>

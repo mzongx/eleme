@@ -104,6 +104,7 @@
         }
       },
       enter(el) {
+        /* eslint-disable no-unused-vars */
         let rf = el.offsetHeight // 这是重绘，相当于硬件加速
         this.$nextTick(() => {
           // 必须要加入nextTick,否则获取不到更新后的dom
@@ -120,6 +121,7 @@
         if (ball) {
           ball.show = false
         }
+        // 购物车抖动效果
         this.shakeClass = true
         setTimeout(() => {
           this.shakeClass = false

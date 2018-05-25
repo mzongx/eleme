@@ -26,7 +26,18 @@
         <div class="ratings">
           <h1 class="title">商品评价</h1>
         </div>
-        <ratingsselect />
+        <ratingsselect @select="selected" @toggle="toggleContent" :select-type="selectType" :only-content="onlyContent" :ratings="food.ratings" />
+        <div class="ratings-list">
+          <ul class="ratings-wrap">
+            <li class="ratings-item border-1px" v-for="(ratingsItem, index) in food.ratings" :key="index" v-show="showList(ratingsItem)">
+              <div class="clearfix">
+                <span class="time left">{{ showTime(ratingsItem.rateTime) }}</span>
+                <span class="user right">{{ ratingsItem.username }}<img class="pic" :src="ratingsItem.avatar" /></span>
+              </div>
+              <div class="content"><i class=" icon" :class="{'icon-thumb_down':ratingsItem.rateType==1,'icon-thumb_up':ratingsItem.rateType==0}"></i><span class="text">{{ ratingsItem.text }}</span></div>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </transition>
@@ -37,11 +48,15 @@
   import ratingsselect from '@/components/ratingsselect/ratingsselect'
   import split from '@/components/split/split'
   import Bscroll from 'better-scroll'
+  import { formatDate } from '@/common/js/date'
+  const ALL = 2
   export default {
     data() {
       return {
         showFood: false, // 默认不显示food组件
-        food: {}
+        selectType: ALL,
+        food: {},
+        onlyContent: false
       }
     },
     methods: {
@@ -69,6 +84,26 @@
       dorpBall(event) {
         // 触发goods.vue中的事件
         this.$emit('dorp-ball', event)
+      },
+      selected(type) {
+        this.selectType = type
+      },
+      toggleContent() {
+        this.onlyContent = !this.onlyContent
+      },
+      showList(item) {
+        // 显示评价列表
+        if (this.onlyContent && !item.text) {
+          return false
+        } else if (this.selectType === ALL) {
+          return true
+        } else {
+          return this.selectType === item.rateType
+        }
+      },
+      showTime(time) {
+        let years = formatDate(time, 'YYYY-MM-DD HH:MM')
+        return years
       }
     },
     components: {
@@ -80,6 +115,7 @@
 </script>
 
 <style lang="stylus">
+  @import '../../common/stylus/mixin.styl'
   .food
     position fixed
     left 0px
@@ -178,4 +214,36 @@
       .title
         padding 18px
         font-size 14px
+    .ratings-list
+      padding 0 18px
+      .ratings-item
+        padding 16px 0
+        border-1px(rgba(7,17,27,.1))
+        .clearfix
+          font-size 10px
+          line-height 12px
+          color rgb(147,153,159)
+          .user
+            .pic
+              display inline-block
+              width 12px
+              height 12px
+              line-height 12px
+              margin-left 6px
+              border-radius 50%
+              vertical-align top
+        .content
+          margin-top 6px
+          font-size 12px
+          .icon
+            line-height 12px
+            margin-right 4px
+            vertical-align middle
+            &.icon-thumb_down
+              color rgb(147,153,159)
+            &.icon-thumb_up
+              color rgb(0,160,220)
+          .text
+            line-height 16px
+            color rgb(7,17,27)
 </style>

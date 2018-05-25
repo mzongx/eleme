@@ -3,6 +3,7 @@
 module.exports = {
   root: true,
   parserOptions: {
+    // 解析es6
     parser: 'babel-eslint'
   },
   env: {
@@ -29,7 +30,7 @@ module.exports = {
     // allow space-brfore-function-paren 0
     'space-before-function-paren': 0,
     // allow no-unused-vars
-    'no-unused-vars': 0,
+    'no-unused-vars': 1,
     "no-tabs": 0
   }
 }
