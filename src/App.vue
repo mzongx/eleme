@@ -33,7 +33,6 @@ export default {
       if (response.errno === 0) {
         _this.seller = response.data
       }
-      console.log(response.data)
     }).catch(function (error) {
       console.log(error)
     })

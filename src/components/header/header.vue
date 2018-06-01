@@ -228,6 +228,7 @@ export default {
         width 100%
         .detail-main
           margin-top 64px
+          padding-bottom 64px
           .name
             font-size 16px
             line-height 16px

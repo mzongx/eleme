@@ -21,7 +21,7 @@ export default new Router({
     },
     {
       path: '/seller',
-      name: 'sleer',
+      name: 'seller',
       component: Seller
     }
   ],

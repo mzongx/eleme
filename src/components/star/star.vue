@@ -57,14 +57,12 @@ export default {
     font-size 0
     .star-item
       display inline-block
-      margin-right 20px
-      &:last-child
-        margin-right 0
     &.star-48
       .star-item
         width 24px
         height 24px
         background-size 24px 24px
+        margin-right 20px
         &.star-off
           bg-image('star48_off')
         &.star-half
@@ -73,9 +71,10 @@ export default {
           bg-image('star48_on')
     &.star-36
       .star-item
-        width 18px
-        height 18px
-        background-size 18px 18px
+        width 15px
+        height 15px
+        background-size 15px 15px
+        margin-right 6px
         &.star-off
           bg-image('star36_off')
         &.star-half
@@ -87,11 +86,15 @@ export default {
         width 12px
         height 12px
         background-size 12px 12px
+        margin-right 2px
         &.star-off
           bg-image('star24_off')
         &.star-half
           bg-image('star24_half')
         &.star-on
           bg-image('star24_on')
-
+    &.star-24,&.star-36,&.star-48
+      .star-item
+        &:last-child
+          margin-right 0
 </style>

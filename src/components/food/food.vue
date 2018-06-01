@@ -34,7 +34,7 @@
                 <span class="time left">{{ showTime(ratingsItem.rateTime) }}</span>
                 <span class="user right">{{ ratingsItem.username }}<img class="pic" :src="ratingsItem.avatar" /></span>
               </div>
-              <div class="content"><i class=" icon" :class="{'icon-thumb_down':ratingsItem.rateType==1,'icon-thumb_up':ratingsItem.rateType==0}"></i><span class="text">{{ ratingsItem.text }}</span></div>
+              <div class="content"><i class="icon" :class="{'icon-thumb_down':ratingsItem.rateType==1,'icon-thumb_up':ratingsItem.rateType==0}"></i><span class="text">{{ ratingsItem.text }}</span></div>
             </li>
           </ul>
         </div>
@@ -102,8 +102,8 @@
         }
       },
       showTime(time) {
-        let years = formatDate(time, 'YYYY-MM-DD HH:MM')
-        return years
+        let date = formatDate(time, 'YYYY-MM-DD hh:mm')
+        return date
       }
     },
     components: {
