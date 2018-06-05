@@ -18,4 +18,4 @@ new Vue({
 })
 // 或者render: h => h(App);也是同一个意思
 
-router.push('/goods')
+// router.push('/goods')

@@ -8,8 +8,8 @@
           <span class="rating-count">({{ seller.ratingCount }})评价</span>
           <span class="seller-count">月售{{ seller.sellCount }}单</span>
         </div>
-        <div class="favorite">
-          <i class="icon-favorite icon" :class="{'active': favorite}" @click="favoriteToggle"></i>
+        <div class="favorite" @click="favoriteToggle">
+          <i class="icon-favorite icon" :class="{'active': favorite}"></i>
           <p class="text">{{ favoriteText }}</p>
         </div>
         <ul class="seller-service">
@@ -60,32 +60,23 @@ import star from '@/components/star/star'
 import split from '@/components/split/split'
 import supports from '@/components/supports/supports'
 import Bscroll from 'better-scroll'
+import { getItem, setItem } from '@/common/js/store'
 export default {
   props: {
     seller: Object
   },
   data () {
     return {
-      favorite: false
+      favorite: (() => {
+        return getItem('favorite', false)
+      })()
     }
   },
   mounted() {
     this.sellerScroll = new Bscroll(this.$refs.sellerScroll, {
       click: true
     })
-
-    if (this.seller.pics) {
-      let picWidth = 120
-      let margin = 6
-      let width = (picWidth + margin) * this.seller.pics.length
-      this.$refs.sellerWrap.style.width = width + 'px'
-      this.$nextTick(() => {
-        this.liveScroll = new Bscroll(this.$refs.liveScroll, {
-          click: true,
-          scrollX: true
-        })
-      })
-    }
+    this._initLiveScroll()
   },
   components: {
     star,
@@ -95,6 +86,30 @@ export default {
   methods: {
     favoriteToggle() {
       this.favorite = !this.favorite
+      setItem('favorite', this.favorite)
+    },
+    _initLiveScroll() {
+      if (this.seller.pics) {
+        let picWidth = 120
+        let margin = 6
+        let width = (picWidth + margin) * this.seller.pics.length
+        this.$refs.sellerWrap.style.width = width + 'px'
+        this.$nextTick(() => {
+          if (!this.liveScroll) {
+            this.liveScroll = new Bscroll(this.$refs.liveScroll, {
+              click: true,
+              scrollX: true
+            })
+          } else {
+            this.liveScroll.refresh()
+          }
+        })
+      }
+    }
+  },
+  watch: {
+    'seller'() {
+      this._initLiveScroll()
     }
   },
   computed: {

@@ -8,11 +8,11 @@
       <div class="tab-item">
         <router-link to="/ratings">评价</router-link>
       </div>
-       <div class="tab-item">
+      <div class="tab-item">
         <router-link to="/seller">店铺</router-link>
       </div>
     </div>
-   <router-view :seller="seller"/>
+    <router-view :seller="seller"/>
   </div>
 </template>
 
@@ -31,7 +31,7 @@ export default {
     }).then(function (response) {
       response = response.data
       if (response.errno === 0) {
-        _this.seller = response.data
+        _this.seller = Object.assign({}, _this.seller, response.data)
       }
     }).catch(function (error) {
       console.log(error)
