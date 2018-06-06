@@ -80,7 +80,7 @@ export default {
       if (response.errno === 0) {
         _this.ratings = response.data
         _this.$nextTick(() => {
-          this.ratingsScroll = new Bscroll(_this.$refs.ratingsBox, {
+          _this.ratingsScroll = new Bscroll(_this.$refs.ratingsBox, {
             click: true
           })
         })

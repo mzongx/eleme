@@ -10,7 +10,7 @@
         <span class="line"></span>
         <span class="delivery-price">另需配送费￥{{ deliveryPrice }}元</span>
       </div>
-      <div class="shopcart-result" :class="{'active': resultBtn}">
+      <div class="shopcart-result" :class="{'active': resultBtn}" @click="account">
         <a href="#" class="result-btn">{{ diffPrice }}</a>
       </div>
       <transition-group @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter" name="drop" tag="ul">
@@ -139,6 +139,11 @@
           v.count = 0
         })
         this.toggleList()
+      },
+      account() {
+        if (this.resultBtn) {
+          alert('结算')
+        }
       }
     },
     computed: {
